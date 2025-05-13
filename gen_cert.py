@@ -9,6 +9,7 @@ from cryptography.hazmat.primitives.serialization.pkcs12 import (
     serialize_key_and_certificates,
 )
 from cryptography.x509.oid import NameOID
+from cryptography.hazmat.primitives.serialization import NoEncryption
 
 from common import (
     ca_subject,
@@ -75,4 +76,12 @@ with open(f"out/cert_{sys.argv[1]}.key", "w", encoding="utf-8", mode=0o600) as _
 
 # Create .pfx for Windows
 with open(f"out/cert_{sys.argv[1]}.pfx", "wb") as _pfx:
-    _pfx.write(serialize_key_and_certificates(None, key=__private_key, cert=__certificate))
+    _pfx.write(
+        serialize_key_and_certificates(
+            name=None,
+            key=__private_key,
+            cert=__certificate,
+            cas=None,
+            encryption_algorithm=NoEncryption(),
+        )
+    )
