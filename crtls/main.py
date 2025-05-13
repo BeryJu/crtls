@@ -6,6 +6,7 @@ from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.serialization import (
+    BestAvailableEncryption,
     NoEncryption,
     load_pem_private_key,
 )
@@ -100,10 +101,15 @@ def cert(): ...
 @cert.command("generate", help="Generate a new Certificate.")
 @click.option("--validity-days", default=cert_validity_days, type=int)
 @click.option("--subject-alt-names", multiple=True, default=[])
+@click.option("--pfx-password", type=str)
 @opt_out_dir
 @click.argument("subject")
 def cert_generate(
-    validity_days: int, out_dir: str, subject: str, subject_alt_names: list[str]
+    validity_days: int,
+    out_dir: str,
+    subject: str,
+    subject_alt_names: list[str],
+    pfx_password: str | None = None,
 ):
     __private_key = generate_private_key()
     with open(f"{out_dir}/ca.key", "rb") as _ca_key:
@@ -166,7 +172,11 @@ def cert_generate(
                 key=__private_key,
                 cert=__certificate,
                 cas=None,
-                encryption_algorithm=NoEncryption(),
+                encryption_algorithm=(
+                    BestAvailableEncryption(pfx_password.encode())
+                    if pfx_password
+                    else NoEncryption()
+                ),
             )
         )
 
