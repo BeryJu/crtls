@@ -70,7 +70,7 @@ __certificate = __builder.sign(
 with open(f"out/cert_{sys.argv[1]}.pem", "w", encoding="utf-8") as _cert:
     _cert.write(certificate_pem(__certificate))
 
-with open(f"out/cert_{sys.argv[1]}.key", "w", encoding="utf-8") as _key:
+with open(f"out/cert_{sys.argv[1]}.key", "w", encoding="utf-8", mode=0o600) as _key:
     _key.write(private_key_pem(__private_key))
 
 # Create .pfx for Windows
