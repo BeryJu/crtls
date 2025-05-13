@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ca"
+name = "crtls"
 version = "0.1.0"
 description = ""
 authors = ["Jens Langhammer <jens.langhammer@beryju.org>"]
