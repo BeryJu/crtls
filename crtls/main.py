@@ -92,7 +92,7 @@ def ca_generate(validity_days: int, out_dir: str):
 
     with open(f"{out_dir}/ca.key", "w", encoding="utf-8") as _key:
         _key.write(private_key_pem(__private_key))
-        chmod(_key, 0o600)
+        chmod(_key.fileno(), 0o600)
 
 
 @cli.group("cert", help="Commands related to Certificate management.")
@@ -163,7 +163,7 @@ def cert_generate(
         f"{out_dir}/cert_{subject}.key", "w", encoding="utf-8"
     ) as _key:
         _key.write(private_key_pem(__private_key))
-        chmod(_key, 0o600)
+        chmod(_key.fileno(), 0o600)
 
     # Create .pfx for Windows
     with open(f"{out_dir}/cert_{subject}.pfx", "wb") as _pfx:
