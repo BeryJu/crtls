@@ -6,8 +6,13 @@ authors = ["Jens Langhammer <jens.langhammer@beryju.org>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "*"
+python = ">=3.13"
 cryptography = "*"
+click = "*"
+
+[tool.poetry.group.dev.dependencies]
+black = "*"
+ruff = "*"
 
 [build-system]
 requires = ["poetry-core"]
