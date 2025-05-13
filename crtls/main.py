@@ -1,7 +1,18 @@
 import datetime
+from http.server import SimpleHTTPRequestHandler
 from os import chmod
+from socketserver import TCPServer
 
 import click
+from common import (
+    ca_subject,
+    ca_validity_days,
+    cert_validity_days,
+    certificate_pem,
+    generate_private_key,
+    one_day,
+    private_key_pem,
+)
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -14,16 +25,6 @@ from cryptography.hazmat.primitives.serialization.pkcs12 import (
     serialize_key_and_certificates,
 )
 from cryptography.x509.oid import NameOID
-
-from common import (
-    ca_subject,
-    ca_validity_days,
-    cert_validity_days,
-    certificate_pem,
-    generate_private_key,
-    one_day,
-    private_key_pem,
-)
 
 opt_out_dir = click.option(
     "--out-dir",
@@ -179,6 +180,25 @@ def cert_generate(
                 ),
             )
         )
+
+
+@cli.command("serve", help="Serve generated files on the network.")
+@click.option("--port", default=8000, type=int)
+@opt_out_dir
+def serve(port: int, out_dir: str):
+    class server(SimpleHTTPRequestHandler):
+
+        def __init__(self, request, client_address, server):
+            super().__init__(request, client_address, server, directory=out_dir)
+
+    httpd = TCPServer(("", port), server)
+
+    print("serving at port", port)
+    try:
+        httpd.serve_forever()
+    finally:
+        httpd.server_close()
+
 
 if __name__ == "__main__":
     cli(prog_name="crtls")
