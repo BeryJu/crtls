@@ -1,8 +1,10 @@
-[tool.poetry]
+[project]
 name = "crtls"
 version = "0.1.0"
 description = ""
-authors = ["Jens Langhammer <jens.langhammer@beryju.org>"]
+authors = [
+    { name = "Jens Langhammer" , email = "jens.langhammer@beryju.org"}
+]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -13,6 +15,9 @@ click = "*"
 [tool.poetry.group.dev.dependencies]
 black = "*"
 ruff = "*"
+
+[project.scripts]
+crtls = 'crtls.main:main'
 
 [build-system]
 requires = ["poetry-core"]

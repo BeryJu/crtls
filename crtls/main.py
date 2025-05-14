@@ -4,7 +4,7 @@ from os import chmod
 from socketserver import TCPServer
 
 import click
-from common import (
+from crtls.common import (
     ca_subject,
     ca_validity_days,
     cert_validity_days,
@@ -159,9 +159,7 @@ def cert_generate(
     with open(f"{out_dir}/cert_{subject}.pem", "w", encoding="utf-8") as _cert:
         _cert.write(certificate_pem(__certificate))
 
-    with open(
-        f"{out_dir}/cert_{subject}.key", "w", encoding="utf-8"
-    ) as _key:
+    with open(f"{out_dir}/cert_{subject}.key", "w", encoding="utf-8") as _key:
         _key.write(private_key_pem(__private_key))
         chmod(_key.fileno(), 0o600)
 
@@ -200,5 +198,9 @@ def serve(port: int, out_dir: str):
         httpd.server_close()
 
 
-if __name__ == "__main__":
+def main():
     cli(prog_name="crtls")
+
+
+if __name__ == "__main__":
+    main()
