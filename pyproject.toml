@@ -11,6 +11,7 @@ readme = "README.md"
 python = ">=3.13"
 cryptography = "*"
 click = "*"
+idna = "*"
 
 [tool.poetry.group.dev.dependencies]
 black = "*"

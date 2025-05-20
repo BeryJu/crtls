@@ -4,15 +4,7 @@ from os import chmod
 from socketserver import TCPServer
 
 import click
-from crtls.common import (
-    ca_subject,
-    ca_validity_days,
-    cert_validity_days,
-    certificate_pem,
-    generate_private_key,
-    one_day,
-    private_key_pem,
-)
+import idna
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -24,7 +16,19 @@ from cryptography.hazmat.primitives.serialization import (
 from cryptography.hazmat.primitives.serialization.pkcs12 import (
     serialize_key_and_certificates,
 )
+from cryptography.x509 import load_pem_x509_certificate
 from cryptography.x509.oid import NameOID
+from cryptography.x509.name import _ASN1Type
+
+from crtls.common import (
+    ca_subject,
+    ca_validity_days,
+    cert_validity_days,
+    certificate_pem,
+    generate_private_key,
+    one_day,
+    private_key_pem,
+)
 
 opt_out_dir = click.option(
     "--out-dir",
@@ -115,13 +119,17 @@ def cert_generate(
     __private_key = generate_private_key()
     with open(f"{out_dir}/ca.key", "rb") as _ca_key:
         __root_key = load_pem_private_key(_ca_key.read(), None)
-    other_san = [x509.DNSName(x) for x in subject_alt_names]
+    with open(f"{out_dir}/ca.pem", "rb") as _ca_pem:
+        __root_pub = load_pem_x509_certificate(_ca_pem.read(), None)
+    other_san = [x509.DNSName(idna.encode(x).decode()) for x in subject_alt_names]
     __builder = (
         x509.CertificateBuilder()
         .subject_name(
             x509.Name(
                 [
-                    x509.NameAttribute(NameOID.COMMON_NAME, subject),
+                    x509.NameAttribute(
+                        NameOID.COMMON_NAME, subject, _type=_ASN1Type.UTF8String
+                    ),
                 ]
             )
         )
@@ -132,6 +140,7 @@ def cert_generate(
         )
         .serial_number(x509.random_serial_number())
         .public_key(__private_key.public_key())
+        .add_extension(x509.AuthorityKeyIdentifier.from_issuer_public_key(__root_pub.public_key()), critical=False)
         .add_extension(
             x509.ExtendedKeyUsage(
                 [
@@ -142,8 +151,10 @@ def cert_generate(
             critical=False,
         )
         .add_extension(
-            x509.SubjectAlternativeName([x509.DNSName(subject), *other_san]),
-            critical=True,
+            x509.SubjectAlternativeName(
+                [x509.DNSName(idna.encode(subject).decode()), *other_san]
+            ),
+            critical=False,
         )
         .add_extension(
             x509.SubjectKeyIdentifier.from_public_key(__private_key.public_key()),
