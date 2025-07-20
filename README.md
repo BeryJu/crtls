@@ -1,3 +1,3 @@
 # crtls
 
-Small python app to create certificates
+Small ~~python~~ Golang app to create certificates
