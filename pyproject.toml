@@ -6,9 +6,9 @@ authors = [
     { name = "Jens Langhammer" , email = "jens.langhammer@beryju.org"}
 ]
 readme = "README.md"
+requires-python = ">=3.10"
 
 [tool.poetry.dependencies]
-python = ">=3.13"
 cryptography = "*"
 click = "*"
 idna = "*"
