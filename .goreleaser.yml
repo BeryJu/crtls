@@ -54,9 +54,11 @@ homebrew_casks:
       bash: completions/crtls.bash
       zsh: completions/crtls.zsh
       fish: completions/crtls.fish
-    hooks:
-      post:
-        install: |
+    custom_block: |
+      on_macos do
+        postflight do
           if system_command("/usr/bin/xattr", args: ["-h"]).exit_status == 0
-            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/{{ .ProjectName }}"]
+            system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/crtls"]
           end
+        end
+      end
