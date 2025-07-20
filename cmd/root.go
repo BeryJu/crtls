@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"os"
+	"path/filepath"
 
 	"beryju.io/crtls/cmd/ca"
 	"beryju.io/crtls/cmd/cert"
+	"github.com/adrg/xdg"
 	"github.com/spf13/cobra"
 )
 
@@ -33,7 +35,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringP("output-dir", "o", "./out", "Directory to write output files to.")
+	rootCmd.PersistentFlags().StringP("output-dir", "o", filepath.Join(xdg.DataHome, "crtls"), "Directory to write output files to.")
 	rootCmd.AddCommand(ca.Cmd)
 	rootCmd.AddCommand(cert.Cmd)
 }
