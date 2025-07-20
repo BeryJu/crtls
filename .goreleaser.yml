@@ -2,6 +2,7 @@ version: 2
 before:
   hooks:
     - go mod tidy
+    - ./scripts/completions.sh
 builds:
   - env:
       - CGO_ENABLED=0
@@ -29,34 +30,14 @@ archives:
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
   - id: tar
     formats: tar.gz
+    files:
+      - completions/*
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 checksum:
   name_template: "{{ .ProjectName }}_{{ .Version }}_SHA256SUMS"
   algorithm: sha256
 release:
   prerelease: auto
-dockers:
-  - image_templates: ["ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-amd64"]
-    dockerfile: Dockerfile
-    use: buildx
-    build_flag_templates:
-      - --platform=linux/amd64
-  - image_templates:
-      ["ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-arm64v8"]
-    goarch: arm64
-    dockerfile: Dockerfile
-    use: buildx
-    build_flag_templates:
-      - --platform=linux/arm64/v8
-docker_manifests:
-  - name_template: ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}
-    image_templates:
-      - ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-amd64
-      - ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-arm64v8
-  - name_template: ghcr.io/beryju/{{ .ProjectName }}:latest
-    image_templates:
-      - ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-amd64
-      - ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-arm64v8
 homebrew_casks:
   - name: "{{ .ProjectName }}"
     ids:
@@ -69,6 +50,10 @@ homebrew_casks:
       name: homebrew-tap
     homepage: "https://github.com/BeryJu/{{ .ProjectName }}"
     description: Tool for creating a CA and Certificates, mainly aimed at testing setups
+    completions:
+      bash: completions/crtls.bash
+      zsh: completions/crtls.zsh
+      fish: completions/crtls.fish
     hooks:
       post:
         install: |
