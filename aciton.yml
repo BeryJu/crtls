@@ -1,0 +1,11 @@
+name: 'crtls'
+description: 'Certificate creation tool'
+inputs:
+  command:
+    description: 'Command to run'
+    required: true
+runs:
+  using: 'docker'
+  image: "docker://ghcr.io/beryju/crtls:latest"
+  args:
+    - ${{ inputs.command }}
