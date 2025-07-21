@@ -3,9 +3,13 @@ on:
   push:
     tags:
       - "v*"
+
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - run: git fetch --prune --unshallow
