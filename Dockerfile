@@ -1,5 +1,6 @@
 FROM debian
 
-COPY crtls /
+ARG TARGETPLATFORM
+COPY $TARGETPLATFORM/crtls /crtls
 
 ENTRYPOINT [ "/crtls" ]

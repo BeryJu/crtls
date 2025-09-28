@@ -38,27 +38,11 @@ checksum:
   algorithm: sha256
 release:
   prerelease: auto
-dockers:
-  - image_templates:
-      - "ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-amd64"
-    use: buildx
-    build_flag_templates:
-      - --platform=linux/amd64
-  - image_templates:
-      - "ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-arm64v8"
-    goarch: arm64
-    use: buildx
-    build_flag_templates:
-      - --platform=linux/arm64/v8
-docker_manifests:
-  - name_template: ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}
-    image_templates:
-      - ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-amd64
-      - ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-arm64v8
-  - name_template: ghcr.io/beryju/{{ .ProjectName }}:latest
-    image_templates:
-      - ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-amd64
-      - ghcr.io/beryju/{{ .ProjectName }}:{{ .Version }}-arm64v8
+dockers_v2:
+  - images:
+      - "ghcr.io/beryju/{{ .ProjectName }}"
+    tags:
+      - "{{ .Version }}"
 homebrew_casks:
   - name: "{{ .ProjectName }}"
     ids:
