@@ -14,12 +14,16 @@ func WriteCertificatePEM(filename string, certDER []byte) error {
 	if err != nil {
 		return err
 	}
-	defer certFile.Close()
 
-	return pem.Encode(certFile, &pem.Block{
+	encoded := pem.Encode(certFile, &pem.Block{
 		Type:  "CERTIFICATE",
 		Bytes: certDER,
 	})
+	err = certFile.Close()
+	if err != nil {
+		return err
+	}
+	return encoded
 }
 
 func WritePrivateKeyPEM(filename string, privateKey *rsa.PrivateKey) error {
@@ -27,13 +31,17 @@ func WritePrivateKeyPEM(filename string, privateKey *rsa.PrivateKey) error {
 	if err != nil {
 		return err
 	}
-	defer keyFile.Close()
 
 	privateKeyDER := x509.MarshalPKCS1PrivateKey(privateKey)
-	return pem.Encode(keyFile, &pem.Block{
+	encoded := pem.Encode(keyFile, &pem.Block{
 		Type:  "RSA PRIVATE KEY",
 		Bytes: privateKeyDER,
 	})
+	err = keyFile.Close()
+	if err != nil {
+		return err
+	}
+	return encoded
 }
 
 func WritePFX(filename string, privateKey *rsa.PrivateKey, cert *x509.Certificate, password string) error {
