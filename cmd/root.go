@@ -6,6 +6,7 @@ import (
 
 	"beryju.io/crtls/cmd/ca"
 	"beryju.io/crtls/cmd/cert"
+	"beryju.io/crtls/cmd/scep"
 	"github.com/adrg/xdg"
 	"github.com/spf13/cobra"
 )
@@ -38,4 +39,5 @@ func init() {
 	rootCmd.PersistentFlags().StringP("output-dir", "o", filepath.Join(xdg.DataHome, "crtls"), "Directory to write output files to.")
 	rootCmd.AddCommand(ca.Cmd)
 	rootCmd.AddCommand(cert.Cmd)
+	rootCmd.AddCommand(scep.Cmd)
 }

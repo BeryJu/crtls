@@ -230,7 +230,7 @@ var serveCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(serveCmd)
 	serveCmd.Flags().StringVarP(&serverPort, "port", "p", "8000", "Port to serve on")
-	serveCmd.Flags().StringVar(&serverHost, "host", "[::1]", "Host to serve on")
+	serveCmd.Flags().StringVar(&serverHost, "host", "", "Host to serve on")
 }
 
 func serveFileBrowser(w http.ResponseWriter, r *http.Request, baseDir string) {
