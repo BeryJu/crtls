@@ -4,7 +4,7 @@ go 1.24.5
 
 require (
 	github.com/adrg/xdg v0.5.3
-	github.com/go-kit/kit v0.4.0
+	github.com/go-kit/kit v0.13.0
 	github.com/micromdm/scep/v2 v2.3.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.10.1
@@ -13,8 +13,8 @@ require (
 )
 
 require (
+	github.com/go-kit/log v0.2.0 // indirect
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
-	github.com/go-stack/stack v1.6.0 // indirect
 	github.com/gorilla/context v0.0.0-20160226214623-1ea25387ff6f // indirect
 	github.com/gorilla/mux v1.4.0 // indirect
 	github.com/groob/finalizer v0.0.0-20170707115354-4c2ed49aabda // indirect
