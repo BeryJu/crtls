@@ -12,7 +12,7 @@ import (
 	"github.com/pkg/errors"
 
 	"beryju.io/crtls/internal"
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 	scepdepot "github.com/micromdm/scep/v2/depot"
 	scepserver "github.com/micromdm/scep/v2/server"
 	"github.com/spf13/cobra"
