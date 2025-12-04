@@ -7,7 +7,7 @@ require (
 	github.com/go-kit/log v0.2.1
 	github.com/micromdm/scep/v2 v2.3.0
 	github.com/pkg/errors v0.9.1
-	github.com/spf13/cobra v1.10.1
+	github.com/spf13/cobra v1.10.2
 	golang.org/x/net v0.47.0
 	software.sslmate.com/src/go-pkcs12 v0.6.0
 )
