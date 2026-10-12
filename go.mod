@@ -8,7 +8,7 @@ require (
 	github.com/micromdm/scep/v2 v2.3.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.10.2
-	golang.org/x/net v0.59.0
+	golang.org/x/net v0.60.0
 	software.sslmate.com/src/go-pkcs12 v0.7.3
 )
 
